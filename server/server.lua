@@ -9,6 +9,16 @@ RegisterCommand("civ", function(source, args, raw)
 		CancelEvent()
 	end
 end, false)
+--local ems = 'ARPM.ems'
+RegisterCommand("ems", function(source, args, raw)
+ local player = source
+  --if IsPlayerAceAllowed(source, ems) then
+	if (player > 0) then
+	  TriggerClientEvent("ARPM:emsduty", player)
+	   CancelEvent()
+	--end
+end
+end, true)
 
 RegisterCommand("healself", function(source, args, raw)
 	local player = source 
