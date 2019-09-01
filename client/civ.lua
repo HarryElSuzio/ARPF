@@ -1,6 +1,8 @@
 local civonduty = false
 local lockpicking = false
 local handCuffed = false
+local civonduty = false 
+local emsduty = false
 
 RegisterNetEvent("ARPF:ToggleCivDuty")
 AddEventHandler("ARPF:ToggleCivDuty", function(outfit)
@@ -22,6 +24,79 @@ AddEventHandler("ARPF:ToggleCivDuty", function(outfit)
   end
   TriggerEvent('chatMessage', "^1[SYSTEM]:^0 You are now"..duty.."^0.")
 end) -- Modified from Lances ARPM script to be used for Civs
+
+-- EMS
+RegisterNetEvent("ARPM:emsduty")
+AddEventHandler("ARPM:emsduty", function()
+    local str = nil
+    emsduty = not emsduty
+    if emsduty then
+      str = " onduty as an EMS"
+      local models = GetHashKey("s_m_y_cop_01")
+        RequestModel(models)
+      while not HasModelLoaded(models) do
+        RequestModel(models)
+        Citizen.Wait(0)
+      end
+        --inServiceCops = true
+        peds = GetPlayerPed(-1)
+        --ids = GetPlayerServerId(PlayerId())
+        --print(ids.." -your server id")
+        --TriggerServerEvent("eblips:add", {name = "EMS", src = ids, color = 1}) -- can be used with blips https://forum.fivem.net/t/release-emergencyblips/493022
+        --print(inServiceCops)
+      local playerPed = GetPlayerPed(-1)
+    else
+      str = " offduty"
+      --inServiceCops = false
+      --print(ids.." -your server id2")
+      --TriggerServerEvent("eblips:remove", ids) 
+    end
+    exports['mythic_notify']:DoHudText('inform', "You are now"..str..".")
+end)
+
+function checkdutystatus(duty) -- Export checker to see what "job" you have
+  if duty == "civonduty" then
+    if civonduty then
+      print("onduty / civ") 
+      return true
+    else
+      print(" not onduty / civ") 
+      return false
+    end
+  --[[elseif duty == "onduty" then -- Future update ;)
+    if onduty then
+      print("onduty / cop") 
+      return true
+    else
+      print("not onduty / cop") 
+      return false
+    end]]
+  elseif duty == "emsduty" then
+    if emsduty then
+      print("onduty / ems") 
+      return true
+    else
+      print("not onduty / ems") 
+      return false
+    end
+  --[[elseif duty == "mechanicduty" then -- Future update ;)
+    if mechanicduty then
+      print("onduty / mechanic") 
+      return true
+    else
+      print("not onduty / mechanic") 
+      return false
+    end]]
+  elseif duty == "none" then
+    if --[[not onduty and]] not civonduty and not emsduty then
+      print("not onduty any")
+      return true
+    else
+      print("onduty on something")
+      return false
+    end
+  end
+end
 
 function VehicleInFront()
   local player = PlayerPedId()
