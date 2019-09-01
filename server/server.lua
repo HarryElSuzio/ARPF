@@ -18,7 +18,7 @@ RegisterCommand("ems", function(source, args, raw)
 	   CancelEvent()
 	--end
 end
-end, true)
+end, false)
 
 RegisterCommand("healself", function(source, args, raw)
 	local player = source 
